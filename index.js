@@ -51,6 +51,15 @@ app.get('/receiver/poweroff', function (req, res) {
 	});
 });
 
+app.get('/receiver/setVolumeTo/:volumeLevel', function (req, res) {
+	receiver.setVolumeTo(req.params.volumeLevel, function (err) {
+		if (err) {
+			return res.status(500).json(_message(err.message || 'Unable to set receiver volume'));
+		}
+		return res.status(200).json(_message('Ok'));
+	});
+});
+
 app.listen(LDVP_PORT, function () {
 	console.log('Listening to port:', LDVP_PORT);
 });

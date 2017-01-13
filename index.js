@@ -32,6 +32,16 @@ app.use(function (req, res, next) {
 	next();
 });
 
+
+app.get('/receiver/poweron', function (req, res) {
+	receiver.powerOn(function (err) {
+		if (err) {
+			return res.status(500).json(_message('Unable to turn on receiver'));
+		}
+		return res.status(200).json(_message('Ok'));
+	});
+});
+
 app.get('/receiver/poweroff', function (req, res) {
 	receiver.powerOff(function (err) {
 		if (err) {

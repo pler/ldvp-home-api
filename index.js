@@ -9,7 +9,7 @@ const Receiver = require('./receiver');
 // Globals
 // -------------
 
-const LDVP_PORT = process.env.LDVP_PORT || '3000';
+const LDVP_PORT = process.env.LDVP_PORT || '45000';
 const LDVP_RECEIVER_IP = process.env.LDVP_RECEIVER_IP || '192.168.178.22';
 
 // -------------
@@ -32,7 +32,7 @@ app.use(function (req, res, next) {
 	next();
 });
 
-app.post('/receiver/poweroff', function (req, res) {
+app.get('/receiver/poweroff', function (req, res) {
 	receiver.powerOff(function (err) {
 		if (err) {
 			return res.status(500).json(_message('Unable to turn off receiver'));

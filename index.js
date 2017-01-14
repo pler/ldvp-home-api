@@ -74,13 +74,14 @@ app.get('/receiver/setInputTo/:inputChannel', function (req, res) {
 });
 
 app.get('/firetv/apps/:appId/start', function (req, res) {
-	receiver.setMainInputTo('firetv', function () {
-		firetv.startApp(req.params.appId, function (err, rc, body) {
-			if (err) {
-				return res.status(500).json(_message(err.message || 'Sorry, ich konnte diese app nicht starten.'));
-			}
-			return res.status(200).json(_message(format('Ok. %s gestartet.', req.params.appId)));
-		});
+	// No need to wait for the receiver to finish
+	// until starting the app in firetv
+	receiver.setMainInputTo('firetv', function () {});
+	firetv.startApp(req.params.appId, function (err, rc, body) {
+		if (err) {
+			return res.status(500).json(_message(err.message || 'Sorry, ich konnte diese app nicht starten.'));
+		}
+		return res.status(200).json(_message(format('Ok. %s gestartet.', req.params.appId)));
 	});
 });
 

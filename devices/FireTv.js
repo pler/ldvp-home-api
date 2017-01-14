@@ -20,7 +20,9 @@ const ACTION_MAPPING = {
 	'home': 'home',
 	'play': 'media_play',
 	'on': 'turn_on',
-	'off': 'turn_off'
+	'an': 'turn_on',
+	'off': 'turn_off',
+	'aus': 'turn_off'
 };
 
 // -------------

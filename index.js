@@ -12,7 +12,7 @@ const FireTv = require('./devices/FireTv');
 
 const LDVP_PORT = process.env.LDVP_PORT || '45000';
 const LDVP_RECEIVER_IP = process.env.LDVP_RECEIVER_IP || '192.168.178.22';
-const LDVP_FIRETV_IP = process.env.LDVP_FIRETV_IP || 'http://192.168.178.24:5556';
+const LDVP_FIRETV_IP = process.env.LDVP_FIRETV_IP || 'http://127.0.0.1:46000';
 
 // -------------
 // Init

@@ -2,10 +2,26 @@
 
 const Yamaha = require('yamaha-nodejs');
 
+// -------------
+// Globals
+// -------------
+
+const INPUT_MAPPING = {
+	'kodi': 'HDMI1',
+	'firetv': 'HDMI2',
+	'playstation': 'HDMI3',
+	'webradio': 'NET RADIO'
+};
+
+// -------------
+// Init
+// -------------
+
 function Receiver(addr) {
 	this.yamaha = new Yamaha(addr);
 }
 
+// See https://github.com/PSeitz/yamaha-nodejs
 
 Receiver.prototype.powerOn = function powerOn (callback) {
 	console.log('Yamaha: power on');
@@ -31,7 +47,7 @@ Receiver.prototype.powerOff = function powerOff (callback) {
 
 Receiver.prototype.setVolumeTo = function setVolumeTo (volumeLevel, callback) {
 	console.log('Yamaha: set volume to ' + volumeLevel);
-	
+
 	var that = this;
 	this.yamaha.isOn().then(function (result) {
 		if ( !result ){
@@ -40,42 +56,42 @@ Receiver.prototype.setVolumeTo = function setVolumeTo (volumeLevel, callback) {
 		else
 		{
 			var errmsgInvalidParam = 'Bitte gib eine ganze Zahl zwischen 0 und 80 an.';
-			
+
 			if( !isNaturalNumber(volumeLevel) )
 			{
 				console.log(errmsgInvalidParam);
 				return callback(new Error(errmsgInvalidParam));
 			}
-			
+
 			var volumeLevelMapped = parseInt(volumeLevel);
-			
+
 			if ( volumeLevelMapped < 0 || volumeLevelMapped > 80)
 			{
 				console.log(errmsgInvalidParam);
 				return callback(new Error(errmsgInvalidParam));
 			}
-			
+
 			volumeLevelMapped = volumeLevelMapped * -10;
-			
+
 			console.log('Setting volume level to ' + (volumeLevelMapped / 10) + 'db');
-			
+
 			that.yamaha.setVolumeTo(volumeLevelMapped)
 				.then(function () {
 					return callback();
 				})
 				.catch(function (err) {
-					console.log('Error during volume setting')
+					console.log('Error during volume setting');
 					return callback(err);
 				});
 		}
 	});
 
-	
+
 };
 
 Receiver.prototype.setMainInputTo = function setMainInputTo (inputChannel, callback) {
 	console.log('Yamaha: set input to ' + inputChannel);
-	
+
 	var that = this;
 	this.yamaha.isOn().then(function (result) {
 		if ( !result ){
@@ -83,35 +99,32 @@ Receiver.prototype.setMainInputTo = function setMainInputTo (inputChannel, callb
 		}
 		else
 		{
-			inputChannel = inputChannel.toUpperCase();
-			
-			var knownInputs = { 'FIRETV':'HDMI2', 'PLAYSTATION':'HDMI3', 'KODI':'HDMI1', 'WEBRADIO':'NET RADIO' }
-			
-			var inputChannelMapped = knownInputs[inputChannel];
-			
+			inputChannel = inputChannel.toLowerCase();
+
+			var inputChannelMapped = INPUT_MAPPING[inputChannel];
+
 			if ( !inputChannelMapped )
 			{
 				var errMsgInvalidInput = 'Diesen Eingang kenne ich leider nicht.';
 				console.log(errMsgInvalidInput);
 				return callback(new Error(errMsgInvalidInput));
 			}
-			
+
 			console.log('Setting input to ' + inputChannelMapped);
-			
+
 			that.yamaha.setMainInputTo(inputChannelMapped)
 				.then(function () {
 					return callback();
 				})
 				.catch(function (err) {
-					console.log('Error during input channel setting')
+					console.log('Error during input channel setting');
 					return callback(err);
 				});
 		}
 	});
-
-	
 };
 
+Receiver.INPUT_MAPPING = INPUT_MAPPING;
 
 // Source: http://stackoverflow.com/a/16799758
 function isNaturalNumber(n) {

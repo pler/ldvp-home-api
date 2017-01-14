@@ -60,4 +60,7 @@ FireTv.prototype._get = function (path, callback) {
 	request.get(this.host + path, callback);
 };
 
+FireTv.APP_MAPPING = APP_MAPPING;
+FireTv.ACTION_MAPPING = ACTION_MAPPING;
+
 module.exports = FireTv;

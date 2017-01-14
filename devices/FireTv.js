@@ -35,6 +35,10 @@ function FireTv(host, device) {
 // See https://github.com/happyleavesaoc/python-firetv
 
 FireTv.prototype.startApp = function (appId, callback) {
+	if (typeof appId !== 'string') {
+		return callback(new Error('Invalid input format'));
+	}
+	appId = appId.toLowerCase();
 	if (!APP_MAPPING[appId]) {
 		return callback(new Error('Unknown app: ' + appId));
 	}
@@ -42,6 +46,10 @@ FireTv.prototype.startApp = function (appId, callback) {
 };
 
 FireTv.prototype.triggerAction = function (actionId, callback) {
+	if (typeof actionId !== 'string') {
+		return callback(new Error('Invalid input format'));
+	}
+	actionId = actionId.toLowerCase();
 	if (!ACTION_MAPPING[actionId]) {
 		return callback(new Error('Unknown action: ' + actionId));
 	}

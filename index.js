@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const async = require('async');
 const format = require('util').format;
 
 const Receiver = require('./devices/Receiver');
@@ -76,12 +77,27 @@ app.get('/receiver/setInputTo/:inputChannel', function (req, res) {
 app.get('/firetv/apps/:appId/start', function (req, res) {
 	// No need to wait for the receiver to finish
 	// until starting the app in firetv
-	receiver.setMainInputTo('firetv', function () {});
-	firetv.startApp(req.params.appId, function (err, rc, body) {
-		if (err) {
-			return res.status(500).json(_message(err.message || 'Sorry, ich konnte diese app nicht starten.'));
-		}
-		return res.status(200).json(_message(format('Ok. %s gestartet.', req.params.appId)));
+	async.auto({
+		receiver: function (callback) {
+			receiver.setMainInputTo('firetv', function () {
+				callback(null);
+			});
+		},
+		start_fire_tv: function (callback) {
+			firetv.triggerAction('on', function (err) {
+				callback(err);
+			});
+		},
+		start_fire_tv_app: ['start_fire_tv', function (results, callback) {
+			firetv.startApp(req.params.appId, function (err) {
+				callback(err);
+			});
+		}]
+	}, function (err, results) {
+			if (err) {
+				return res.status(500).json(_message(err.message || 'Sorry, ich konnte diese app nicht starten.'));
+			}
+			return res.status(200).json(_message(format('Ok. %s gestartet.', req.params.appId)));
 	});
 });
 

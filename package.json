@@ -18,6 +18,7 @@
   "homepage": "https://github.com/pler/ldvp-home-api#readme",
   "dependencies": {
     "express": "^4.14.0",
+    "request": "^2.79.0",
     "yamaha-nodejs": "^0.7.6"
   }
 }

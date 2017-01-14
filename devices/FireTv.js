@@ -13,7 +13,7 @@ const APP_MAPPING = {
 	'spotify': 'com.spotify.tv.android',
 	'youtube': 'org.chromium.youtube_apk',
 	'zdf': 'com.zdf.android.mediathek',
-	'feuer': 'com.screenview.amazontoastyfireplace'
+	'kamin': 'com.screenview.amazontoastyfireplace'
 };
 
 const ACTION_MAPPING = {

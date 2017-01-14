@@ -98,7 +98,6 @@ Receiver.prototype.setMainInputTo = function setMainInputTo (inputChannel, callb
 			that.yamaha.powerOn().then(function () {
 				return _switchMainInput();
 			});
-			return callback(new Error('Der Receiver ist im Moment nicht eingeschaltet.'));
 		} else {
 			return _switchMainInput();
 		}
